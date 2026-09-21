@@ -71,7 +71,7 @@ class Plugin(pwem.Plugin):
             "PYTORCH_INSTALLED"
         ).addCommand(
             f"{pwchemPlugin.getEnvActivationCommand(PIPPACK_DIC)} && "
-            "conda install -y mkl=2024.0.0",
+            "conda install -y -c conda-forge mkl=2024.0.0",
             "MKL_INSTALLED"
         ).addCommand(
             f"{pwchemPlugin.getEnvActivationCommand(PIPPACK_DIC)} && "
