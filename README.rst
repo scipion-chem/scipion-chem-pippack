@@ -1,10 +1,10 @@
 =======================
-OpenStructure plugin
+PIPPack plugin
 =======================
 
 **Documentation under development, sorry for the inconvenience**
 
-This is a **Scipion** plugin that offers `OpenStructure <https://openstructure.org/>`_
+This is a **Scipion** plugin that offers `PIPPack <github.com/Kuhlman-Lab/PIPPack>`_
 
 
 ==========================
@@ -17,7 +17,7 @@ You will need to first install
 
 1. **Install the plugin in Scipion**
 
-OpenStructure is installed automatically by scipion.
+PIPPack is installed automatically by scipion.
 
 - **Install the stable version (Not available yet)**
 
@@ -27,7 +27,7 @@ OpenStructure is installed automatically by scipion.
 
 .. code-block::
 
-    scipion3 installp -p scipion-chem-openstructure
+    scipion3 installp -p scipion-chem-pippack
 
 
 - **Developer's version**
@@ -36,24 +36,24 @@ OpenStructure is installed automatically by scipion.
 
     .. code-block::
 
-        git clone https://github.com/scipion-chem/scipion-chem-openstructure.git
+        git clone https://github.com/scipion-chem/scipion-chem-pippack.git
 
     2. **Switch to the desired branch** (master or devel):
 
-    scipion-em-openstructure is constantly under development and including new features.
+    scipion-chem-pippack is constantly under development and including new features.
     If you want a relatively older an more stable version, use master branch (default).
     If you want the latest changes and developments, user devel branch.
 
     .. code-block::
 
-                cd scipion-chem-openstructure
+                cd scipion-chem-pippack
                 git checkout devel
 
     3. **Install**:
 
     .. code-block::
 
-        scipion3 installp -p path_to_scipion-chem-openstructure --devel
+        scipion3 installp -p path_to_scipion-chem-pippack --devel
 
 
 

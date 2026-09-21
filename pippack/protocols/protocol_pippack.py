@@ -33,7 +33,7 @@ from pyworkflow.protocol.constants import LEVEL_ADVANCED
 from pwem.protocols import EMProtocol
 from pyworkflow.object import String, Float
 
-from openstructure.__init__ import Plugin
+from pippack.__init__ import Plugin
 from pwchem.__init__ import Plugin as pwchemPlugin
 from pwem.objects.data import AtomStruct, SetOfAtomStructs
 from pwchem.objects.base import SmallMolecule, SetOfSmallMolecules
