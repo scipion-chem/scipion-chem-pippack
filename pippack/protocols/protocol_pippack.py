@@ -45,7 +45,178 @@ from pwchem.constants import OPENBABEL_DIC
 
 class ProtPIPPack(EMProtocol):
     """
+ Generates protein side-chain conformations from an input protein
+        structure or ensemble using PIPPack.
 
+        The protocol performs side-chain prediction with PIPPack, allowing
+        sampling of alternative chi-angle conformations and optional
+        post-prediction resampling to reduce steric clashes. The protocol can
+        process either a single protein structure or a SetOfAtomStructs
+        containing multiple structures.
+
+        Workflow
+        --------
+        1. Receive either a single AtomStruct or a SetOfAtomStructs as input.
+        2. Convert input structures to PDB format when necessary.
+        3. Prepare the input PDB files in the protocol working directory.
+        4. Locate the PIPPack installation and its pretrained model weights.
+        5. Run the PIPPack inference workflow using the selected parameters.
+        6. Optionally use GPU acceleration for PIPPack execution.
+        7. Optionally perform post-prediction resampling to reduce steric
+           clashes between side chains.
+        8. Collect the generated PDB structures.
+        9. Return a single AtomStruct when one structure is generated, or a
+           SetOfAtomStructs when multiple structures are produced.
+
+        Input
+        -----
+        - inputType:
+            Selects whether the protocol processes a single structure or an
+            ensemble of structures.
+
+            Available options are:
+            - AtomStruct
+            - SetOfAtomStructs
+
+        - inputStruct:
+            Input AtomStruct containing the protein structure to be processed.
+            Used when ``inputType`` is set to AtomStruct.
+
+        - inputEnsemble:
+            SetOfAtomStructs containing the protein structures to be processed.
+            Used when ``inputType`` is set to SetOfAtomStructs.
+
+        Parameters
+        ----------
+        - Chi temperature:
+            Temperature used by PIPPack when sampling side-chain chi angles.
+
+            The default value is 1.0. Higher or lower values can modify the
+            sampling behaviour of alternative side-chain conformations.
+
+        - Recycles:
+            Number of recycling iterations performed during PIPPack inference.
+
+            The default value is 3.
+
+        - Use resampling:
+            Enables the post-prediction resampling procedure used to reduce
+            steric clashes between residues.
+
+            The default value is enabled.
+
+        - Sampling temperature:
+            Temperature used when sampling alternative side-chain conformations
+            during the resampling procedure.
+
+            The default value is 0.1.
+
+        - Clash overlap tolerance:
+            Tolerance for atomic overlap when evaluating steric clashes during
+            resampling.
+
+            The default value is 0.4.
+
+        - Proline tolerance factor:
+            Tolerance factor applied to proline residues during clash
+            evaluation.
+
+            The default value is 12.
+
+        - Maximum iterations:
+            Maximum number of iterations performed by the resampling procedure.
+
+            The default value is 50.
+
+        - Metropolis temperature:
+            Temperature controlling the acceptance of candidate conformations
+            during the Metropolis-based resampling procedure.
+
+            The default value is 0.000005.
+
+        - Use GPU for execution:
+            Enables GPU acceleration for PIPPack.
+
+            The default value is enabled.
+
+        - Choose GPU IDs:
+            Comma-separated list of GPU devices available for execution.
+
+            The default GPU ID is 0.
+
+        Side-Chain Prediction
+        ---------------------
+        PIPPack is used to predict protein side-chain conformations from the
+        input structures.
+
+        The protocol provides control over the chi-angle sampling temperature
+        and the number of recycling iterations used during inference.
+
+        Resampling
+        ----------
+        When enabled, PIPPack performs an additional resampling procedure after
+        the initial prediction.
+
+        The resampling procedure evaluates steric clashes and samples
+        alternative side-chain conformations using the following parameters:
+
+        - Sampling temperature
+        - Clash overlap tolerance
+        - Proline tolerance factor
+        - Maximum iterations
+        - Metropolis temperature
+
+        This step is intended to reduce the number of clashing residues in the
+        predicted structures.
+
+        Output
+        ------
+        - outputAtomStruct:
+            Generated AtomStruct when the PIPPack workflow produces a single
+            PDB structure.
+
+        - outputAtomStructs:
+            SetOfAtomStructs containing the generated structures when multiple
+            PDB files are produced.
+
+        The output structures are stored in PDB format. If the input consists
+        of multiple structures, each generated PDB is retained as an individual
+        AtomStruct in the output set.
+
+        Summary
+        -------
+        The protocol generates protein structures with predicted side-chain
+        conformations using PIPPack.
+
+        Depending on the number of generated structures, the output is provided
+        either as a single AtomStruct or as a SetOfAtomStructs.
+
+        Use Cases
+        ---------
+        - Predicting protein side-chain conformations
+        - Completing or refining protein structural models
+        - Generating side-chain conformational ensembles
+        - Reducing steric clashes in predicted side-chain arrangements
+        - Preparing protein structures for downstream structural analysis
+        - Preparing protein models for docking and other structure-based
+          computational workflows
+
+        Notes
+        -----
+        Input structures are converted to PDB format before being processed by
+        PIPPack. CIF files are converted using the Scipion CIF-to-PDB conversion
+        utility, while other input formats are copied to the working directory
+        with a PDB extension.
+
+        The protocol can process a single structure or an ensemble in the same
+        workflow. When multiple PDB files are generated, all resulting
+        structures are retained in the output SetOfAtomStructs.
+
+        GPU execution is optional. When enabled, the selected GPU IDs are passed
+        to the PIPPack workflow.
+
+        The resampling-specific parameters are only used when the resampling
+        procedure is enabled.
     """
     _label = 'generate protein side chains'
 
