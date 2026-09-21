@@ -143,7 +143,7 @@ class ProtPIPPack(EMProtocol):
     def _insertAllSteps(self):
         self._insertFunctionStep('prepareInputStep')
         self._insertFunctionStep('runPIPPack')
-        self._insertFunctionStep(self.createOutputStep)
+        self._insertFunctionStep('createOutputStep')
 
     def prepareInputStep(self):
         inputDir = self._getExtraPath('input')
